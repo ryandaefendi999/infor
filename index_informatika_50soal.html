@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informatika - Materi dan 50 Soal</title>
+<style>
+:root {
+  --card: rgba(10,18,34,.84);
+  --card2: rgba(17,24,39,.90);
+  --text: #f8fafc;
+  --muted: #cbd5e1;
+  --line: rgba(255,255,255,.12);
+  --accent: #38bdf8;
+  --accent2: #22c55e;
+  --warn: #f59e0b;
+  --shadow: 0 18px 42px rgba(0,0,0,.35);
+  --radius: 24px;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0; min-height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text); background: #000;
+}
+body {
+  background: linear-gradient(rgba(0,0,0,.58), rgba(0,0,0,.72)), url("foto22.jpg") center/cover fixed no-repeat;
+}
+.screen { min-height: 100vh; display: none; align-items: center; justify-content: center; padding: 14px; }
+.screen.active { display: flex; }
+.wrap { width: min(1000px, 100%); margin: auto; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.pad { padding: 18px 16px 20px; }
+h1 { margin: 0 0 8px; text-align: center; font-size: clamp(28px, 5.5vw, 42px); line-height: 1.15; }
+h2 { margin: 18px 0 8px; font-size: 20px; }
+h3 { margin: 16px 0 8px; font-size: 18px; }
+p, li { line-height: 1.65; }
+.subtitle { text-align: center; color: var(--muted); margin: 0 0 14px; font-size: 14px; }
+.material { max-height: 68vh; overflow: auto; padding-right: 4px; }
+.material code { background: rgba(255,255,255,.08); padding: 2px 6px; border-radius: 8px; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
+.btn { appearance: none; border: none; cursor: pointer; color: white; font-weight: 700; font-size: 15px; padding: 13px 18px; border-radius: 999px; background: linear-gradient(135deg, var(--accent), #2563eb); box-shadow: 0 12px 28px rgba(37,99,235,.35); }
+.btn.secondary { background: linear-gradient(135deg, #64748b, #334155); box-shadow: none; }
+.btn.success { background: linear-gradient(135deg, var(--accent2), #16a34a); box-shadow: 0 12px 28px rgba(34,197,94,.28); }
+.btn.warn { background: linear-gradient(135deg, var(--warn), #d97706); box-shadow: 0 12px 28px rgba(245,158,11,.28); }
+.pill { display: inline-block; padding: 7px 12px; border-radius: 999px; background: rgba(56,189,248,.16); border: 1px solid rgba(56,189,248,.25); color: #dbeafe; font-size: 13px; margin-bottom: 10px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--muted); font-size: 14px; }
+.progress { width: 100%; height: 10px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; margin-bottom: 18px; }
+.bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), #60a5fa); transition: width .3s ease; }
+.qtitle { font-size: clamp(22px, 5vw, 34px); line-height: 1.35; margin: 0 0 16px; }
+.choices { display: grid; gap: 12px; }
+.choice { width: 100%; text-align: left; border: 1px solid rgba(255,255,255,.10); border-radius: 22px; background: var(--card2); color: #fff; padding: 15px 16px; font-size: 15px; line-height: 1.5; cursor: pointer; }
+.choice:hover { background: rgba(30,41,59,.96); }
+.choice.disabled { cursor: not-allowed; opacity: .95; }
+.choice.correct { background: rgba(34,197,94,.18); border-color: rgba(34,197,94,.55); }
+.choice.wrong { background: rgba(239,68,68,.16); border-color: rgba(239,68,68,.55); }
+.feedback { display: none; margin-top: 16px; padding: 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,.10); background: rgba(15,23,42,.86); }
+.feedback.show { display: block; }
+.status { font-weight: 800; font-size: 18px; margin-bottom: 8px; }
+.status.ok { color: #86efac; }
+.status.no { color: #fca5a5; }
+.label { text-transform: uppercase; letter-spacing: .06em; font-size: 12px; color: #93c5fd; margin: 10px 0 5px; font-weight: 700; }
+.answerLine { color: #e2e8f0; line-height: 1.6; }
+.reviewBox { margin-top: 14px; display: grid; gap: 12px; }
+.reviewItem { padding: 14px; border-radius: 18px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); text-align: left; }
+.reviewItem h4 { margin: 0 0 6px; font-size: 16px; }
+.reviewItem .bad { color: #fecaca; }
+.reviewItem .good { color: #bbf7d0; }
+.note { color: var(--muted); text-align: center; font-size: 13px; line-height: 1.5; margin-top: 10px; }
+.hidden { display: none !important; }
+@media (max-width: 640px) {
+  .screen { padding: 10px; }
+  .pad { padding: 16px 12px 18px; }
+  .material { max-height: 64vh; }
+}
+</style>
+</head>
+<body>
+<audio id="bgm" autoplay loop preload="auto">
+  <source src="musik222.mp3" type="audio/mpeg">
+</audio>
+
+<section id="screen-material" class="screen active">
+  <div class="wrap">
+    <div class="card pad">
+      <h1>Materi Informatika</h1>
+      <p class="subtitle">Halaman pertama berisi materi lengkap tanpa dikurangi. Setelah itu, halaman berikutnya menampilkan 50 soal, satu soal per halaman.</p>
+      <div class="material"><p>Kuburan aja tulisannya bisa salah di batu nisan, apalagi catatan buru-buru.</p>
+<p>Siap, aku tambahkan dan sekalian kubetulkan yang salah tulis. Yang paling penting dulu:</p>
+
+<h2>Penulisan yang benar</h2>
+<ul>
+  <li><strong>Scratch</strong>, bukan <em>Scartch</em></li>
+  <li><strong>Blockly</strong>, bukan <em>Blocky</em> / <em>blocly</em></li>
+  <li>Alamat web yang benar untuk catatanmu:
+    <ul>
+      <li><code>https://scratch.mit.edu</code></li>
+      <li><code>https://developers.google.com/blockly</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p>Scratch adalah bahasa pemrograman visual sekaligus komunitas coding untuk anak, sedangkan Blockly adalah editor atau library pemrograman visual berbasis blok.</p>
+
+<h2>Materi Informatika yang sudah dibetulkan dan ditambah</h2>
+
+<h3>1. Alamat web</h3>
+<ul>
+  <li><strong>Scratch</strong>: <code>https://scratch.mit.edu</code></li>
+  <li><strong>Blockly</strong>: <code>https://developers.google.com/blockly</code></li>
+</ul>
+
+<h3>2. Program pada komputer</h3>
+<p>Program pada komputer adalah <strong>sekumpulan instruksi atau perintah</strong> yang dibuat agar komputer melakukan tugas tertentu.</p>
+<p><strong>Contoh:</strong> program kalkulator, program game, program pengolah kata.</p>
+
+<h3>3. Pengertian algoritma</h3>
+<p>Algoritma adalah <strong>langkah-langkah yang logis, terurut, dan sistematis untuk menyelesaikan masalah</strong>.</p>
+<p><strong>Contoh algoritma membuat mi instan:</strong></p>
+<ol>
+  <li>Siapkan panci</li>
+  <li>Masukkan air</li>
+  <li>Rebus air</li>
+  <li>Masukkan mi</li>
+  <li>Tiriskan dan campur bumbu</li>
+  <li>Sajikan</li>
+</ol>
+
+<h3>4. Pengertian pemrograman</h3>
+<p>Pemrograman adalah <strong>proses menulis, menyusun, menguji, dan memperbaiki kode program</strong> agar komputer bisa menjalankan perintah tertentu.</p>
+
+<h3>5. Yang dimaksud loop dalam pemrograman</h3>
+<p>Loop adalah <strong>perulangan</strong>, yaitu perintah untuk menjalankan suatu instruksi <strong>berkali-kali</strong>.</p>
+<p><strong>Contoh:</strong> menampilkan tulisan “Halo” sebanyak 5 kali.</p>
+
+<h3>6. Apa yang dimaksud fungsi dalam pemrograman</h3>
+<p>Fungsi adalah <strong>sekumpulan perintah yang dibuat untuk melakukan tugas tertentu dan bisa dipanggil kembali saat dibutuhkan</strong>.</p>
+<p><strong>Manfaat fungsi:</strong> membuat program lebih rapi, mengurangi pengulangan kode, dan memudahkan perbaikan program.</p>
+
+<h3>7. Pengertian bahasa pemrograman</h3>
+<p>Bahasa pemrograman adalah <strong>bahasa khusus untuk memberikan perintah kepada komputer</strong>.</p>
+<p><strong>Contoh:</strong> Python, Java, C++, JavaScript.</p>
+
+<h3>8. Pengertian kompilasi dalam pemrograman</h3>
+<p>Kompilasi adalah <strong>proses menerjemahkan kode sumber menjadi bahasa mesin atau bentuk yang bisa dijalankan komputer</strong>.</p>
+
+<h3>9. Pengertian debugging</h3>
+<p>Debugging adalah <strong>proses mencari, menemukan, dan memperbaiki kesalahan pada program</strong>.</p>
+<p><strong>Tujuan debugging:</strong> agar program berjalan dengan benar tanpa error.</p>
+
+<h3>10. Pengertian array</h3>
+<p>Array adalah <strong>struktur data yang menyimpan banyak data sejenis dalam satu tempat</strong>.</p>
+<p><strong>Contoh:</strong> <code>[10, 20, 30, 40]</code></p>
+<p>Artinya, beberapa angka disimpan dalam satu variabel berbentuk kumpulan data.</p>
+
+<h3>11. Struktur data</h3>
+<p>Struktur data adalah <strong>cara menyusun dan menyimpan data agar mudah diproses oleh komputer</strong>.</p>
+<p><strong>Contoh struktur data:</strong> array, stack, queue.</p>
+
+<h3>12. Algoritma sorting</h3>
+<p>Algoritma sorting adalah <strong>algoritma untuk mengurutkan data</strong>.</p>
+<p><strong>Contoh:</strong> data <code>7, 2, 5, 1</code> setelah diurutkan menjadi <code>1, 2, 5, 7</code>.</p>
+<p><strong>Contoh jenis sorting:</strong> Bubble Sort, Selection Sort, Insertion Sort.</p>
+
+<h3>13. Bilangan biner</h3>
+<p>Bilangan biner adalah <strong>sistem bilangan yang hanya memakai dua angka, yaitu 0 dan 1</strong>.</p>
+<p>Komputer memakai sistem ini karena komputer bekerja dengan kondisi:</p>
+<ul>
+  <li><strong>0</strong> = mati / off</li>
+  <li><strong>1</strong> = hidup / on</li>
+</ul>
+
+<h3>14. Bilangan biner ke desimal</h3>
+<p>Cara mengubah biner ke desimal: setiap digit biner dikalikan dengan pangkat 2 sesuai posisinya.</p>
+<p><strong>Contoh:</strong> <code>1011₂</code></p>
+<ul>
+  <li>1 × 2³ = 8</li>
+  <li>0 × 2² = 0</li>
+  <li>1 × 2¹ = 2</li>
+  <li>1 × 2⁰ = 1</li>
+</ul>
+<p>Jadi: <code>1011₂ = 11₁₀</code></p>
+
+<h3>15. Desimal ke biner</h3>
+<p>Cara mengubah desimal ke biner: bagi angka desimal dengan 2 terus-menerus, lalu ambil sisanya.</p>
+<p><strong>Contoh:</strong> <code>13₁₀</code> ke biner</p>
+<ul>
+  <li>13 ÷ 2 = 6 sisa 1</li>
+  <li>6 ÷ 2 = 3 sisa 0</li>
+  <li>3 ÷ 2 = 1 sisa 1</li>
+  <li>1 ÷ 2 = 0 sisa 1</li>
+</ul>
+<p>Baca sisa dari bawah ke atas: <code>1101₂</code></p>
+<p>Jadi: <code>13₁₀ = 1101₂</code></p>
+
+<h3>16. Bilangan oktal</h3>
+<p>Bilangan oktal adalah <strong>sistem bilangan berbasis 8</strong>, yang memakai angka <code>0, 1, 2, 3, 4, 5, 6, 7</code>.</p>
+<p><strong>Contoh:</strong> <code>17₈</code></p>
+<ul>
+  <li>1 × 8¹ = 8</li>
+  <li>7 × 8⁰ = 7</li>
+</ul>
+<p>Jadi: <code>17₈ = 15₁₀</code></p>
+
+<h2>Versi catatan yang lebih rapi untuk ditulis ulang</h2>
+<ol>
+  <li>Alamat web: Scratch = <code>https://scratch.mit.edu</code>, Blockly = <code>https://developers.google.com/blockly</code></li>
+  <li>Program komputer = kumpulan instruksi atau perintah untuk menjalankan tugas tertentu</li>
+  <li>Algoritma = langkah-langkah logis dan terurut untuk menyelesaikan masalah</li>
+  <li>Pemrograman = proses membuat dan menulis kode program</li>
+  <li>Loop = perulangan</li>
+  <li>Fungsi = kumpulan perintah untuk tugas tertentu yang bisa dipanggil lagi</li>
+  <li>Bahasa pemrograman = bahasa untuk memberi perintah ke komputer</li>
+  <li>Kompilasi = proses menerjemahkan kode ke bahasa mesin</li>
+  <li>Debugging = proses mencari dan memperbaiki kesalahan program</li>
+  <li>Array = kumpulan data sejenis dalam satu tempat</li>
+  <li>Struktur data = cara menyusun dan menyimpan data</li>
+  <li>Algoritma sorting = algoritma untuk mengurutkan data</li>
+  <li>Bilangan biner = sistem bilangan 0 dan 1</li>
+  <li>Biner ke desimal = pakai pangkat 2</li>
+  <li>Desimal ke biner = bagi 2 berulang dan ambil sisa</li>
+  <li>Bilangan oktal = sistem bilangan berbasis 8</li>
+</ol></div>
+      <div class="actions">
+        <button class="btn" id="startBtn">Mulai 50 Soal</button>
+      </div>
+      <div class="note">Latar memakai <strong>foto22.jpg</strong> dan musik memakai <strong>musik222.mp3</strong>. Autoplay sudah dipasang, tetapi beberapa browser HP bisa tetap meminta satu sentuhan pertama sebelum audio benar-benar berbunyi.</div>
+    </div>
+  </div>
+</section>
+
+<section id="screen-quiz" class="screen">
+  <div class="wrap" style="max-width:780px;">
+    <div class="card pad">
+      <div class="pill">Informatika • 50 soal • 1 soal per halaman</div>
+      <div class="topbar">
+        <span id="counter">Soal 1 dari 50</span>
+        <span id="scoreLive">Skor sementara: 0</span>
+      </div>
+      <div class="progress"><div class="bar" id="bar"></div></div>
+      <h2 class="qtitle" id="questionText"></h2>
+      <div class="choices" id="choicesBox"></div>
+
+      <div class="feedback" id="feedbackBox">
+        <div class="status" id="statusText"></div>
+        <div class="label">Jawaban kamu</div>
+        <div class="answerLine" id="yourAnswer"></div>
+        <div class="label">Jawaban benar</div>
+        <div class="answerLine" id="correctAnswer"></div>
+        <div class="label">Bukti dari materi</div>
+        <div class="answerLine" id="proofText"></div>
+        <div class="label">Penjelasan detail</div>
+        <div class="answerLine" id="explainText"></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn secondary hidden" id="prevBtn">Kembali ke soal sebelumnya</button>
+        <button class="btn success hidden" id="nextBtn">Lanjut ke soal berikutnya</button>
+        <button class="btn warn hidden" id="finishBtn">Lihat hasil akhir</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="screen-result" class="screen">
+  <div class="wrap" style="max-width:820px;">
+    <div class="card pad" style="text-align:center;">
+      <div class="pill">Hasil Akhir</div>
+      <h1 style="margin-bottom:4px;">Nilai Kamu</h1>
+      <div id="finalScore" style="font-size:clamp(44px,12vw,76px);font-weight:900;color:#7dd3fc;">0</div>
+      <p class="subtitle" id="scoreSummary"></p>
+      <div class="actions">
+        <button class="btn success" id="reviewBtn">Lihat ulang jawaban</button>
+        <button class="btn secondary" id="restartBtn">Ulang dari awal</button>
+      </div>
+      <div class="reviewBox" id="wrongReview"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+const QUESTIONS = [{"question": "Alamat web Scratch yang benar adalah ...", "options": ["https://developers.google.com/scratch", "https://scratch.mit.com", "https://scratch.mit.edu", "https://scratch.edu"], "correctIndex": 2, "proof": "Pada materi tertulis: Scratch = https://scratch.mit.edu.", "explanation": "Alamat resmi Scratch pada materi adalah scratch.mit.edu."}, {"question": "Alamat web Blockly yang benar adalah ...", "options": ["https://developers.google.com/blockly", "https://scratch.mit.edu", "https://blockly.mit.edu", "https://google.com/blockly"], "correctIndex": 0, "proof": "Pada materi tertulis: Blockly = https://developers.google.com/blockly.", "explanation": "Alamat resmi Blockly pada materi berada pada domain developers.google.com."}, {"question": "Scratch dan Blockly cocok untuk pemula karena ...", "options": ["keduanya hanya untuk antivirus", "keduanya memakai tampilan visual berbasis blok", "keduanya hanya untuk mengetik dokumen", "keduanya hanya untuk C++"], "correctIndex": 1, "proof": "Materi menjelaskan Scratch sebagai bahasa pemrograman visual dan Blockly sebagai editor atau library berbasis blok.", "explanation": "Blok visual memudahkan pemula memahami logika program tanpa terlalu pusing sintaks."}, {"question": "Program komputer paling tepat diartikan sebagai ...", "options": ["bagian layar komputer", "kabel internet", "alat penyimpan listrik", "sekumpulan instruksi atau perintah agar komputer melakukan tugas tertentu"], "correctIndex": 3, "proof": "Materi menyebut: Program pada komputer adalah sekumpulan instruksi atau perintah yang dibuat agar komputer melakukan tugas tertentu.", "explanation": "Program adalah kumpulan perintah, bukan benda fisik."}, {"question": "Yang termasuk contoh program komputer adalah ...", "options": ["keyboard", "speaker", "program kalkulator", "mouse"], "correctIndex": 2, "proof": "Materi memberi contoh program: program kalkulator, program game, dan program pengolah kata.", "explanation": "Program kalkulator adalah software, sedangkan pilihan lain perangkat keras."}, {"question": "Algoritma adalah ...", "options": ["alat internet", "langkah-langkah logis, terurut, dan sistematis untuk menyelesaikan masalah", "komputer pintar", "bahasa menggambar"], "correctIndex": 1, "proof": "Materi menyebut: Algoritma adalah langkah-langkah yang logis, terurut, dan sistematis untuk menyelesaikan masalah.", "explanation": "Algoritma adalah urutan langkah penyelesaian masalah."}, {"question": "Langkah membuat mi instan bisa disebut algoritma karena ...", "options": ["harus ditulis dalam bahasa Inggris", "tidak butuh urutan", "hanya untuk komputer", "langkahnya berurutan dan dipakai untuk mencapai hasil tertentu"], "correctIndex": 3, "proof": "Materi memberi contoh algoritma membuat mi instan dalam langkah-langkah yang berurutan.", "explanation": "Sebuah algoritma harus runtut dan punya tujuan yang jelas."}, {"question": "Jika langkah penyelesaian masalah tidak urut, maka itu ...", "options": ["lebih baik dari algoritma", "bukan algoritma yang baik", "tetap sempurna", "sama dengan bahasa pemrograman"], "correctIndex": 1, "proof": "Materi menekankan bahwa algoritma harus logis, terurut, dan sistematis.", "explanation": "Kalau langkah tidak runtut, hasil penyelesaian masalah bisa salah."}, {"question": "Pemrograman adalah ...", "options": ["cara menghias desktop", "bahasa untuk robot saja", "alat penyimpanan data", "proses menulis, menyusun, menguji, dan memperbaiki kode program"], "correctIndex": 3, "proof": "Materi menyebut: Pemrograman adalah proses menulis, menyusun, menguji, dan memperbaiki kode program.", "explanation": "Pemrograman meliputi penulisan kode sampai perbaikan kesalahan."}, {"question": "Hubungan algoritma dengan pemrograman adalah ...", "options": ["algoritma adalah keyboard", "algoritma adalah rancangan langkah, pemrograman adalah proses mengubahnya menjadi kode", "tidak berhubungan", "pemrograman terjadi dulu"], "correctIndex": 1, "proof": "Pada materi dijelaskan algoritma sebagai langkah penyelesaian masalah, sedangkan pemrograman adalah proses membuat kode program.", "explanation": "Biasanya solusi dirancang dulu sebagai algoritma, lalu ditulis menjadi kode."}, {"question": "Loop dalam pemrograman berarti ...", "options": ["alat cari bug", "bahasa pemrograman baru", "perulangan perintah berkali-kali", "penghapusan data"], "correctIndex": 2, "proof": "Materi menyebut: Loop adalah perulangan, yaitu perintah untuk menjalankan suatu instruksi berkali-kali.", "explanation": "Loop dipakai saat ada instruksi yang perlu diulang."}, {"question": "Loop berguna dalam program karena ...", "options": ["bisa menjalankan instruksi berulang tanpa menulis perintah yang sama terus-menerus", "mengganti fungsi jadi data", "menghapus algoritma", "membuat komputer jadi hardware"], "correctIndex": 0, "proof": "Pada materi loop dijelaskan sebagai perintah untuk menjalankan instruksi berkali-kali.", "explanation": "Loop membuat kode lebih singkat dan efisien."}, {"question": "Contoh penggunaan loop yang sesuai adalah ...", "options": ["menampilkan tulisan 'Halo' sebanyak 5 kali", "menerjemahkan kode ke bahasa mesin", "mematikan komputer tanpa perintah", "mengganti mouse jadi keyboard"], "correctIndex": 0, "proof": "Materi memberi contoh loop: menampilkan tulisan “Halo” sebanyak 5 kali.", "explanation": "Menampilkan teks yang sama berulang adalah contoh penggunaan loop."}, {"question": "Fungsi dalam pemrograman adalah ...", "options": ["proses mengurutkan data", "sekumpulan perintah untuk tugas tertentu yang bisa dipanggil kembali", "alat cetak dokumen", "tempat file komputer"], "correctIndex": 1, "proof": "Materi menyebut: Fungsi adalah sekumpulan perintah yang dibuat untuk melakukan tugas tertentu dan bisa dipanggil kembali saat dibutuhkan.", "explanation": "Fungsi mengelompokkan tugas tertentu agar bisa dipakai lagi."}, {"question": "Salah satu manfaat fungsi adalah ...", "options": ["menghapus kebutuhan debug", "membesarkan komputer", "mengurangi pengulangan kode", "mengubah biner jadi oktal"], "correctIndex": 2, "proof": "Materi menuliskan manfaat fungsi: membuat program lebih rapi, mengurangi pengulangan kode, dan memudahkan perbaikan program.", "explanation": "Dengan fungsi, kode yang sama tidak perlu ditulis berulang-ulang."}, {"question": "Fungsi membuat program lebih rapi karena ...", "options": ["perintah untuk satu tugas dikumpulkan dalam satu bagian", "semua data dihapus", "menjadikan hardware", "mempercepat internet"], "correctIndex": 0, "proof": "Materi menjelaskan manfaat fungsi, salah satunya membuat program lebih rapi.", "explanation": "Saat tugas dipisah dalam fungsi, struktur program lebih mudah dibaca."}, {"question": "Bahasa pemrograman adalah ...", "options": ["alat listrik", "bahasa khusus untuk memberikan perintah kepada komputer", "cara menggambar", "bahasa rahasia manusia"], "correctIndex": 1, "proof": "Materi menyebut: Bahasa pemrograman adalah bahasa khusus untuk memberikan perintah kepada komputer.", "explanation": "Komputer memerlukan aturan bahasa khusus agar bisa memahami instruksi."}, {"question": "Yang termasuk contoh bahasa pemrograman adalah ...", "options": ["Monitor", "Python", "Excel", "Scanner"], "correctIndex": 1, "proof": "Materi memberi contoh bahasa pemrograman: Python, Java, C++, JavaScript.", "explanation": "Python adalah bahasa pemrograman."}, {"question": "JavaScript, Java, dan C++ memiliki kesamaan yaitu ...", "options": ["semuanya termasuk bahasa pemrograman", "semuanya alamat web", "semuanya jenis array", "semuanya alat P3K komputer"], "correctIndex": 0, "proof": "Materi menyebut Python, Java, C++, dan JavaScript sebagai contoh bahasa pemrograman.", "explanation": "Ketiganya dipakai untuk menulis program."}, {"question": "Kompilasi adalah ...", "options": ["proses menghapus bug", "cara membuat fungsi jadi loop", "cara menyimpan data di array", "proses menerjemahkan kode sumber menjadi bahasa mesin atau bentuk yang dapat dijalankan komputer"], "correctIndex": 3, "proof": "Materi menyebut: Kompilasi adalah proses menerjemahkan kode sumber menjadi bahasa mesin atau bentuk yang bisa dijalankan komputer.", "explanation": "Kompilasi diperlukan agar kode dapat dijalankan komputer."}, {"question": "Kompilasi dibutuhkan karena ...", "options": ["semua program harus dicetak", "kompilasi menggantikan struktur data", "komputer perlu kode yang sudah diterjemahkan agar bisa menjalankan program", "loop perlu kompilasi"], "correctIndex": 2, "proof": "Materi menjelaskan kompilasi sebagai penerjemahan kode ke bahasa mesin atau bentuk yang bisa dijalankan komputer.", "explanation": "Bahasa manusia dan bahasa mesin berbeda, sehingga perlu penerjemahan."}, {"question": "Debugging adalah ...", "options": ["proses mengurutkan data", "proses mencari, menemukan, dan memperbaiki kesalahan pada program", "proses membagi dengan 8", "proses menyimpan angka"], "correctIndex": 1, "proof": "Materi menyebut: Debugging adalah proses mencari, menemukan, dan memperbaiki kesalahan pada program.", "explanation": "Debugging dilakukan saat program belum berjalan sesuai harapan."}, {"question": "Tujuan utama debugging adalah ...", "options": ["agar data hilang", "agar program berjalan dengan benar tanpa error", "agar tak perlu algoritma", "agar jadi website"], "correctIndex": 1, "proof": "Materi menulis: Tujuan debugging: agar program berjalan dengan benar tanpa error.", "explanation": "Debugging memastikan kesalahan diperbaiki sehingga program kembali normal."}, {"question": "Array paling tepat dipahami sebagai ...", "options": ["alat mengurutkan bilangan", "kumpulan data sejenis dalam satu tempat", "proses cari bug", "bahasa menulis program"], "correctIndex": 1, "proof": "Materi menyebut: Array adalah struktur data yang menyimpan banyak data sejenis dalam satu tempat.", "explanation": "Array memudahkan penyimpanan beberapa data dengan tipe sama."}, {"question": "Array memudahkan penulisan program karena ...", "options": ["array sama dengan bahasa mesin", "array menghapus fungsi", "array menerjemahkan kode", "banyak data sejenis bisa disimpan sekaligus dalam satu variabel"], "correctIndex": 3, "proof": "Materi menjelaskan bahwa beberapa angka disimpan dalam satu variabel berbentuk kumpulan data.", "explanation": "Array cocok saat jumlah data banyak tetapi jenisnya sama."}, {"question": "Contoh data yang sesuai untuk disimpan dalam array adalah ...", "options": ["https://scratch.mit.edu", "[10, 20, 30, 40]", "debugging", "kompilasi"], "correctIndex": 1, "proof": "Materi memberi contoh array: [10, 20, 30, 40].", "explanation": "Contoh itu tepat karena berisi kumpulan data angka yang sejenis."}, {"question": "Struktur data adalah ...", "options": ["cara menyusun dan menyimpan data agar mudah diproses oleh komputer", "cara menghapus semua program", "cara menulis alamat web", "cara membuat komputer menjadi internet"], "correctIndex": 0, "proof": "Materi menyebut: Struktur data adalah cara menyusun dan menyimpan data agar mudah diproses oleh komputer.", "explanation": "Struktur data membantu komputer mengelola data lebih efisien."}, {"question": "Yang termasuk contoh struktur data pada materi adalah ...", "options": ["debugging", "stack", "kompilasi", "fungsi"], "correctIndex": 1, "proof": "Materi memberi contoh struktur data: array, stack, queue.", "explanation": "Stack termasuk jenis struktur data."}, {"question": "Struktur data penting karena ...", "options": ["data yang tersusun baik lebih mudah diproses oleh komputer", "membuat program tak perlu diuji", "menggantikan bahasa pemrograman", "hanya untuk menggambar"], "correctIndex": 0, "proof": "Materi menekankan bahwa struktur data adalah cara menyusun dan menyimpan data agar mudah diproses.", "explanation": "Data yang rapi akan lebih mudah dicari dan diolah."}, {"question": "Algoritma sorting adalah ...", "options": ["algoritma mencari bug", "algoritma membuat website Scratch", "algoritma membagi angka dengan 8", "algoritma untuk mengurutkan data"], "correctIndex": 3, "proof": "Materi menyebut: Algoritma sorting adalah algoritma untuk mengurutkan data.", "explanation": "Sorting dipakai saat data perlu disusun sesuai urutan tertentu."}, {"question": "Jika data 7, 2, 5, 1 diurutkan dari kecil ke besar, hasilnya adalah ...", "options": ["1, 5, 2, 7", "7, 5, 2, 1", "1, 2, 5, 7", "2, 1, 7, 5"], "correctIndex": 2, "proof": "Materi memberi contoh: data 7, 2, 5, 1 setelah diurutkan menjadi 1, 2, 5, 7.", "explanation": "Urutan kecil ke besar berarti angka terkecil ditempatkan lebih dulu."}, {"question": "Yang termasuk contoh algoritma sorting adalah ...", "options": ["Binary Off", "Bubble Sort", "Scratch Function", "Loop Sorter Web"], "correctIndex": 1, "proof": "Materi memberi contoh jenis sorting: Bubble Sort, Selection Sort, Insertion Sort.", "explanation": "Bubble Sort adalah salah satu metode dasar pengurutan data."}, {"question": "Bilangan biner adalah ...", "options": ["sistem bilangan berbasis 10", "sistem bilangan berbasis 8", "sistem bilangan dengan huruf", "sistem bilangan yang hanya memakai angka 0 dan 1"], "correctIndex": 3, "proof": "Materi menyebut: Bilangan biner adalah sistem bilangan yang hanya memakai dua angka, yaitu 0 dan 1.", "explanation": "Sistem biner menjadi dasar kerja komputer."}, {"question": "Komputer memakai sistem biner karena ...", "options": ["biner lebih banyak angka", "komputer bekerja dengan dua kondisi dasar, yaitu 0 dan 1", "manusia suka angka 2", "biner hanya untuk internet"], "correctIndex": 1, "proof": "Materi menjelaskan: 0 = mati/off dan 1 = hidup/on.", "explanation": "Komponen komputer mudah dibedakan antara mati dan hidup."}, {"question": "Dalam materi, angka 0 pada biner berarti ...", "options": ["angka desimal", "angka oktal", "hidup atau on", "mati atau off"], "correctIndex": 3, "proof": "Pada materi tertulis: 0 = mati/off.", "explanation": "Simbol 0 pada biner menunjukkan kondisi tidak aktif."}, {"question": "Dalam materi, angka 1 pada biner berarti ...", "options": ["bilangan oktal", "kesalahan program", "hidup atau on", "mati atau off"], "correctIndex": 2, "proof": "Pada materi tertulis: 1 = hidup/on.", "explanation": "Simbol 1 pada biner menunjukkan kondisi aktif."}, {"question": "Hasil konversi 1011₂ ke desimal adalah ...", "options": ["12", "10", "13", "11"], "correctIndex": 3, "proof": "Materi menunjukkan perhitungan: 1×2³ + 0×2² + 1×2¹ + 1×2⁰ = 11.", "explanation": "Nilai tempat pada biner memakai pangkat 2 lalu dijumlahkan."}, {"question": "Pada konversi biner ke desimal digunakan pangkat 2 karena ...", "options": ["semua angka harus dikali 10", "itu aturan oktal", "komputer hanya mengenal pangkat 3", "biner adalah sistem bilangan berbasis 2"], "correctIndex": 3, "proof": "Materi menyebut cara mengubah biner ke desimal adalah setiap digit dikalikan dengan pangkat 2 sesuai posisinya.", "explanation": "Setiap sistem bilangan memakai basis tertentu."}, {"question": "Hasil konversi 13₁₀ ke biner adalah ...", "options": ["1110₂", "1011₂", "1101₂", "1001₂"], "correctIndex": 2, "proof": "Materi menunjukkan pembagian 13 dengan 2 berulang dan sisa dibaca dari bawah ke atas menjadi 1101₂.", "explanation": "Desimal ke biner dilakukan dengan pembagian berulang oleh 2."}, {"question": "Saat mengubah desimal ke biner, sisa pembagian dibaca ...", "options": ["dari bawah ke atas", "dari atas ke bawah", "acak saja", "dari kiri ke kanan langsung"], "correctIndex": 0, "proof": "Pada materi tertulis: Baca sisa dari bawah ke atas.", "explanation": "Arah baca sisa menentukan hasil akhir biner."}, {"question": "Bilangan oktal adalah ...", "options": ["sistem bilangan berbasis 8", "sistem bilangan berbasis 10", "sistem bilangan berbasis 2", "sistem bilangan berbasis 16"], "correctIndex": 0, "proof": "Materi menyebut: Bilangan oktal adalah sistem bilangan berbasis 8.", "explanation": "Oktal memakai delapan simbol, jadi basisnya 8."}, {"question": "Angka yang boleh dipakai dalam sistem oktal adalah ...", "options": ["0 sampai 9", "1 sampai 8", "0 sampai 8", "0 sampai 7"], "correctIndex": 3, "proof": "Materi menulis bahwa bilangan oktal memakai angka 0, 1, 2, 3, 4, 5, 6, 7.", "explanation": "Karena berbasis 8, simbol tertinggi yang valid adalah 7."}, {"question": "Hasil konversi 17₈ ke desimal adalah ...", "options": ["15", "16", "17", "14"], "correctIndex": 0, "proof": "Materi menunjukkan: 1×8¹ = 8 dan 7×8⁰ = 7, jadi 17₈ = 15₁₀.", "explanation": "Dalam oktal, nilai tempat memakai pangkat 8."}, {"question": "Angka 8 tidak boleh muncul dalam bilangan oktal karena ...", "options": ["sistem oktal hanya memakai simbol 0 sampai 7", "angka 8 hanya untuk biner", "oktal memakai huruf", "angka 8 selalu error"], "correctIndex": 0, "proof": "Materi menjelaskan bahwa bilangan oktal memakai angka 0 sampai 7.", "explanation": "Setiap sistem bilangan memiliki simbol sesuai basisnya."}, {"question": "Pernyataan yang paling tepat tentang debugging dan kompilasi adalah ...", "options": ["debugging menerjemahkan biner, kompilasi mencari bug", "debugging mengurutkan data, kompilasi menyimpan array", "debugging memperbaiki kesalahan, kompilasi menerjemahkan kode", "keduanya sama persis"], "correctIndex": 2, "proof": "Materi menyebut debugging sebagai proses mencari dan memperbaiki kesalahan, sedangkan kompilasi adalah proses menerjemahkan kode sumber.", "explanation": "Keduanya berbeda fungsi."}, {"question": "Pernyataan yang paling tepat tentang loop dan fungsi adalah ...", "options": ["loop dan fungsi sama persis", "loop untuk array, fungsi untuk sorting", "loop untuk perulangan, fungsi untuk tugas tertentu yang bisa dipanggil lagi", "loop untuk kompilasi, fungsi untuk debugging"], "correctIndex": 2, "proof": "Materi menjelaskan loop sebagai perulangan dan fungsi sebagai sekumpulan perintah untuk tugas tertentu yang dapat dipanggil kembali.", "explanation": "Loop dipakai untuk pengulangan, sedangkan fungsi untuk mengelompokkan tugas."}, {"question": "Manfaat mempelajari bilangan biner bagi siswa informatika adalah ...", "options": ["memahami bahwa komputer bekerja dengan sistem 0 dan 1", "biner menggantikan fungsi dan loop", "biner hanya dipakai untuk website", "semua bahasa pemrograman ditulis dengan huruf biner"], "correctIndex": 0, "proof": "Materi menjelaskan bahwa komputer memakai sistem biner karena bekerja dengan kondisi 0 = off dan 1 = on.", "explanation": "Memahami biner membantu memahami dasar penyimpanan dan pemrosesan data."}, {"question": "Jika program belum berjalan sesuai harapan, langkah yang paling tepat adalah ...", "options": ["menghapus algoritma", "mengganti alamat web Scratch", "mengubah semua angka menjadi oktal", "melakukan debugging"], "correctIndex": 3, "proof": "Materi menjelaskan bahwa debugging bertujuan agar program berjalan dengan benar tanpa error.", "explanation": "Saat program bermasalah, kita perlu mencari dan memperbaiki kesalahannya."}, {"question": "Jika data nilai siswa ingin disimpan bersama dalam satu variabel, konsep yang paling tepat adalah ...", "options": ["array", "kompilasi", "debugging", "alamat web"], "correctIndex": 0, "proof": "Materi menjelaskan array sebagai struktur data yang menyimpan banyak data sejenis dalam satu tempat.", "explanation": "Daftar nilai siswa biasanya bertipe sama sehingga cocok dimasukkan ke array."}, {"question": "Jika ingin menyusun data dari kecil ke besar, konsep yang digunakan adalah ...", "options": ["fungsi", "kompilasi", "sorting", "debugging"], "correctIndex": 2, "proof": "Materi menyebut algoritma sorting sebagai algoritma untuk mengurutkan data.", "explanation": "Sorting digunakan ketika data ingin diurutkan."}];
+const LETTERS = ["A","B","C","D"];
+const bgm = document.getElementById("bgm");
+const screens = {
+  material: document.getElementById("screen-material"),
+  quiz: document.getElementById("screen-quiz"),
+  result: document.getElementById("screen-result")
+};
+const startBtn = document.getElementById("startBtn");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const finishBtn = document.getElementById("finishBtn");
+const reviewBtn = document.getElementById("reviewBtn");
+const restartBtn = document.getElementById("restartBtn");
+const counter = document.getElementById("counter");
+const scoreLive = document.getElementById("scoreLive");
+const bar = document.getElementById("bar");
+const questionText = document.getElementById("questionText");
+const choicesBox = document.getElementById("choicesBox");
+const feedbackBox = document.getElementById("feedbackBox");
+const statusText = document.getElementById("statusText");
+const yourAnswer = document.getElementById("yourAnswer");
+const correctAnswer = document.getElementById("correctAnswer");
+const proofText = document.getElementById("proofText");
+const explainText = document.getElementById("explainText");
+const finalScore = document.getElementById("finalScore");
+const scoreSummary = document.getElementById("scoreSummary");
+const wrongReview = document.getElementById("wrongReview");
+
+let currentIndex = 0;
+let answers = Array(QUESTIONS.length).fill(null);
+let locked = Array(QUESTIONS.length).fill(false);
+
+function tryPlayAudio() {
+  const p = bgm.play();
+  if (p && typeof p.catch === "function") p.catch(() => {});
+}
+
+function showScreen(name) {
+  Object.values(screens).forEach(el => el.classList.remove("active"));
+  screens[name].classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  tryPlayAudio();
+}
+
+function getScore() {
+  let score = 0;
+  QUESTIONS.forEach((q, i) => {
+    if (answers[i] === q.correctIndex) score++;
+  });
+  return score;
+}
+
+function formatChoice(q, idx) {
+  return `${LETTERS[idx]}. ${q.options[idx]}`;
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[currentIndex];
+  const picked = answers[currentIndex];
+  const isLocked = locked[currentIndex];
+
+  counter.textContent = `Soal ${currentIndex + 1} dari ${QUESTIONS.length}`;
+  scoreLive.textContent = `Skor sementara: ${getScore()}`;
+  bar.style.width = `${(currentIndex / QUESTIONS.length) * 100}%`;
+  questionText.textContent = q.question;
+  choicesBox.innerHTML = "";
+
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement("button");
+    btn.className = "choice";
+    btn.textContent = `${LETTERS[idx]}. ${opt}`;
+
+    if (isLocked) {
+      btn.classList.add("disabled");
+      if (idx === q.correctIndex) btn.classList.add("correct");
+      if (picked === idx && idx !== q.correctIndex) btn.classList.add("wrong");
+    }
+
+    btn.addEventListener("click", () => {
+      if (locked[currentIndex]) return;
+      answers[currentIndex] = idx;
+      locked[currentIndex] = true;
+      renderQuestion();
+    });
+
+    choicesBox.appendChild(btn);
+  });
+
+  if (isLocked) {
+    feedbackBox.classList.add("show");
+    const right = picked === q.correctIndex;
+    statusText.textContent = right ? "Jawaban kamu benar." : "Jawaban kamu salah.";
+    statusText.className = "status " + (right ? "ok" : "no");
+    yourAnswer.textContent = formatChoice(q, picked);
+    correctAnswer.textContent = formatChoice(q, q.correctIndex);
+    proofText.textContent = q.proof;
+    explainText.textContent = q.explanation;
+  } else {
+    feedbackBox.classList.remove("show");
+    statusText.textContent = "";
+    yourAnswer.textContent = "";
+    correctAnswer.textContent = "";
+    proofText.textContent = "";
+    explainText.textContent = "";
+  }
+
+  prevBtn.classList.toggle("hidden", currentIndex === 0);
+  nextBtn.classList.toggle("hidden", !isLocked || currentIndex >= QUESTIONS.length - 1);
+  finishBtn.classList.toggle("hidden", !(currentIndex === QUESTIONS.length - 1 && isLocked));
+}
+
+function showResult() {
+  const score = getScore();
+  const nilai = Math.round((score / QUESTIONS.length) * 100);
+  finalScore.textContent = nilai;
+  scoreSummary.textContent = `Benar ${score} dari ${QUESTIONS.length} soal.`;
+
+  wrongReview.innerHTML = "";
+  const wrongs = [];
+  QUESTIONS.forEach((q, i) => {
+    if (answers[i] !== q.correctIndex) wrongs.push({ q, i });
+  });
+
+  if (wrongs.length === 0) {
+    wrongReview.innerHTML = '<div class="reviewItem"><h4 class="good">Semua jawaban benar.</h4><div>Kamu menjawab 50 soal dengan tepat.</div></div>';
+  } else {
+    wrongs.forEach(item => {
+      const i = item.i;
+      const q = item.q;
+      const user = answers[i] === null ? "Belum dijawab" : formatChoice(q, answers[i]);
+      const box = document.createElement("div");
+      box.className = "reviewItem";
+      box.innerHTML = `
+        <h4>Soal ${i + 1}</h4>
+        <div style="margin-bottom:6px;">${q.question}</div>
+        <div class="bad"><strong>Jawaban kamu:</strong> ${user}</div>
+        <div class="good" style="margin-top:4px;"><strong>Jawaban benar:</strong> ${formatChoice(q, q.correctIndex)}</div>
+        <div style="margin-top:8px;"><strong>Bukti:</strong> ${q.proof}</div>
+        <div style="margin-top:6px;"><strong>Penjelasan:</strong> ${q.explanation}</div>
+      `;
+      wrongReview.appendChild(box);
+    });
+  }
+
+  showScreen("result");
+}
+
+startBtn.addEventListener("click", () => {
+  currentIndex = 0;
+  answers = Array(QUESTIONS.length).fill(null);
+  locked = Array(QUESTIONS.length).fill(false);
+  showScreen("quiz");
+  renderQuestion();
+});
+
+prevBtn.addEventListener("click", () => {
+  if (currentIndex > 0) {
+    currentIndex--;
+    renderQuestion();
+  }
+});
+
+nextBtn.addEventListener("click", () => {
+  if (currentIndex < QUESTIONS.length - 1) {
+    currentIndex++;
+    renderQuestion();
+  }
+});
+
+finishBtn.addEventListener("click", showResult);
+reviewBtn.addEventListener("click", () => {
+  currentIndex = 0;
+  showScreen("quiz");
+  renderQuestion();
+});
+restartBtn.addEventListener("click", () => {
+  currentIndex = 0;
+  answers = Array(QUESTIONS.length).fill(null);
+  locked = Array(QUESTIONS.length).fill(false);
+  showScreen("material");
+});
+
+window.addEventListener("load", tryPlayAudio);
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) tryPlayAudio();
+});
+["click","touchstart","pointerdown"].forEach(evt => {
+  document.addEventListener(evt, tryPlayAudio, { once: true });
+});
+</script>
+</body>
+</html>
